@@ -114,9 +114,12 @@ export function Sidebar({ userRole }: SidebarProps) {
 
         {/* Navigation */}
         <nav className="flex-1 px-3 space-y-1">
-          {navItems.map((item) => {
+          {navItems.map((item, index) => {
             const Icon = item.icon
-            const isActive = pathname === item.href || pathname?.startsWith(item.href + "/")
+            // For dashboard (first item), only exact match
+            const isActive = index === 0 
+              ? pathname === item.href 
+              : pathname === item.href || pathname?.startsWith(item.href + "/")
             return (
               <Link
                 key={item.href}
