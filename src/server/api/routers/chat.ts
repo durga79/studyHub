@@ -9,9 +9,15 @@ export const chatRouter = router({
     .input(
       z.object({
         receiverId: z.string(),
-        content: z.string().min(1).max(5000),
+        content: z.string().max(5000),
         assignmentId: z.string().optional(),
         projectId: z.string().optional(),
+        files: z.array(z.object({
+          fileName: z.string(),
+          fileUrl: z.string(),
+          fileSize: z.number(),
+          fileType: z.string(),
+        })).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -32,11 +38,25 @@ export const chatRouter = router({
         .values({
           senderId: sender.id,
           receiverId: receiver.id,
-          content: input.content,
+          content: input.content || "",
           assignmentId: input.assignmentId,
           projectId: input.projectId,
         })
         .returning()
+
+      // Add files if provided
+      if (input.files && input.files.length > 0) {
+        await db.insert(messageFiles).values(
+          input.files.map(file => ({
+            messageId: message.id,
+            fileName: file.fileName,
+            fileUrl: file.fileUrl,
+            fileSize: file.fileSize,
+            fileType: file.fileType,
+            isVideo: file.fileType.startsWith("video/"),
+          }))
+        )
+      }
 
       await db.insert(notifications).values({
         userId: receiver.id,

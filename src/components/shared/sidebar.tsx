@@ -18,7 +18,6 @@ import {
   Search,
   Briefcase,
   GraduationCap,
-  Sparkles,
 } from "lucide-react"
 
 const studentNavItems = [
@@ -28,7 +27,6 @@ const studentNavItems = [
   { href: "/dashboard/student/messages", label: "Messages", icon: MessageSquare },
   { href: "/dashboard/student/calendar", label: "Calendar", icon: Calendar },
   { href: "/dashboard/student/marketplace", label: "Marketplace", icon: ShoppingBag },
-  { href: "/dashboard/student/ai-chat", label: "AI Assistant", icon: Sparkles },
   { href: "/dashboard/student/referrals", label: "Referrals", icon: Users },
 ]
 
